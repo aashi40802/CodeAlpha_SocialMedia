@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vibe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- ============ AUTH SCREEN ============ -->
+    <div id="auth-screen" class="auth-screen">
+      <div class="auth-card">
+        <div class="auth-brand">Vibe</div>
+        <p class="auth-tagline" id="auth-tagline">
+          A quieter place to share what you're thinking.
+        </p>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-mode="login">Log in</button>
+          <button class="auth-tab" data-mode="register">Create account</button>
+        </div>
+
+        <form id="auth-form" class="auth-form" autocomplete="off">
+          <div class="field register-only">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Ada Lovelace" />
+          </div>
+          <div class="field register-only">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="ada" />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="At least 6 characters" />
+          </div>
+
+          <div id="auth-error" class="auth-error"></div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="auth-submit">
+            Log in
+          </button>
+        </form>
+
+        <p class="auth-hint" id="auth-hint">
+          Try a demo account: <strong>ananya@vibe.app</strong> / <strong>password123</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ MAIN APP ============ -->
+    <div id="app" class="app hidden">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="brand" id="brand-home">Vibe</div>
+          <div class="topbar-actions">
+            <button class="icon-btn nav-icon" id="dm-btn" title="Messages" aria-label="Messages">
+              <span id="dm-icon"></span><span class="badge" id="dm-badge"></span>
+            </button>
+            <button class="icon-btn nav-icon" id="notif-btn" title="Notifications" aria-label="Notifications">
+              <span id="notif-icon"></span><span class="badge" id="notif-badge"></span>
+            </button>
+            <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+              <span id="theme-icon"></span>
+            </button>
+            <button class="avatar-btn" id="me-avatar" title="Your profile" aria-label="Your profile"></button>
+            <button class="btn btn-ghost" id="logout-btn">Log out</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Notifications panel -->
+      <div id="notif-panel" class="panel hidden">
+        <div class="panel-head">Notifications</div>
+        <div id="notif-list"></div>
+      </div>
+
+      <!-- Messages panel -->
+      <div id="dm-panel" class="panel hidden">
+        <div class="panel-head">Messages</div>
+        <div id="dm-list"></div>
+        <div id="dm-thread" class="hidden"></div>
+      </div>
+
+      <main class="layout">
+        <!-- Feed column -->
+        <section class="feed-col">
+          <div id="view-timeline">
+            <div class="tabs">
+              <button class="tab active" data-feed="explore">Explore</button>
+              <button class="tab" data-feed="following">Following</button>
+            </div>
+
+            <div class="composer">
+              <div class="composer-avatar" id="composer-avatar"></div>
+              <div class="composer-body">
+                <textarea id="composer-text" rows="2" maxlength="500"
+                  placeholder="What's on your mind?"></textarea>
+                <div class="composer-footer">
+                  <span class="char-count" id="char-count">500</span>
+                  <button class="btn btn-primary" id="post-btn" disabled>Post</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="feed" class="feed"></div>
+          </div>
+
+          <!-- Profile view -->
+          <div id="view-profile" class="hidden">
+            <button class="back-link" id="profile-back">Back</button>
+            <div id="profile-header"></div>
+            <div id="profile-feed" class="feed"></div>
+          </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="card side-card">
+            <h3 class="side-title">Who to follow</h3>
+            <div id="suggestions" class="suggestions"></div>
+          </div>
+          <div class="side-footer">
+            Vibe &middot; built for CodeAlpha
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
