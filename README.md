@@ -1,117 +1,145 @@
-# Vibe — Backend API
+# Vibe — A Full-Stack Social Media Platform
 
-Backend for **Vibe**, a full-stack social media platform. Built for CodeAlpha Full Stack Internship — Task 2 (Social Media Platform).
+Vibe is a full-stack social media web application built with Node.js, Express, and MongoDB, with a clean, responsive frontend in vanilla JavaScript. It features a premium, minimal design with light and dark modes, real authentication, and a live feed.
 
-Stack: **Node.js + Express + MongoDB (Mongoose)**, JWT authentication.
+**CodeAlpha Full Stack Development Internship — Task 2 (Social Media Platform)**
 
-This folder is the API server only. The React frontend lives in `../client` (built next).
+## Features
 
-## What it does
+- **User authentication** — register and log in with hashed passwords (bcrypt) and JWT tokens
+- **User profiles** — bio, cover image, location, join date, and follower / following counts
+- **Posts** — create, view, and delete posts (text and images)
+- **Comments** — reply to posts in real conversations
+- **Likes** — like and unlike posts
+- **Follow system** — follow and unfollow other users
+- **Personalized feed** — a "Following" feed (people you follow) and an "Explore" feed (everyone)
+- **Notifications panel** — likes, follows, replies, and mentions
+- **Messages panel** — direct-message style conversations
+- **Light & dark mode** — smooth theme switching
+- **Polished UI** — loading skeletons, empty states, hover effects, and smooth animations
 
-- User registration & login with hashed passwords (bcrypt) and JWT auth
-- User profiles with follower / following counts
-- Create, read, and delete posts (text + images)
-- Comment on posts
-- Like / unlike posts
-- Follow / unfollow users
-- A personalized **feed** (posts from people you follow + your own)
-- An **explore** feed (newest posts from everyone)
-- A seed script that fills the database with realistic demo users and posts
+## Tech Stack
 
-## Requirements
+- **Frontend:** HTML5, CSS3, JavaScript (ES6+)
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB with Mongoose
+- **Authentication:** JWT (JSON Web Tokens) + bcrypt
+- **Architecture:** RESTful API
 
-- Node.js 18+ installed
-- A MongoDB database. Easiest option is a free **MongoDB Atlas** cluster
-  (https://www.mongodb.com/atlas). A local MongoDB install also works.
+## Screenshots
 
-## Setup
+### Login
+![Login](screenshots/login.png)
 
-```bash
-# 1. install dependencies
-npm install
+### Create Account
+![Create Account](screenshots/register.png)
 
-# 2. create your env file from the template
-cp .env.example .env
-#    then open .env and set MONGO_URI and JWT_SECRET
+### Home Feed
+![Home Feed](screenshots/feed.png)
 
-# 3. (optional but recommended) fill the database with demo content
-npm run seed
+### Feed with Image Post
+![Feed with Image Post](screenshots/feed-image.png)
 
-# 4. start the server
-npm run dev      # auto-restarts on changes (development)
-# or
-npm start        # plain start
+### User Profile
+![User Profile](screenshots/profile.png)
+
+### Notifications
+![Notifications](screenshots/notifications.png)
+
+### Messages
+![Messages](screenshots/messages.png)
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- A [MongoDB Atlas](https://www.mongodb.com/atlas) free cluster (or local MongoDB)
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/aashi40802/CodeAlpha_SocialMedia.git
+   cd CodeAlpha_SocialMedia
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Create a `.env` file** in the project root:
+   ```
+   PORT=5000
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_secret_key
+   JWT_EXPIRES_IN=7d
+   ```
+
+4. **Seed the database** with demo users and posts:
+   ```bash
+   npm run seed
+   ```
+
+5. **Start the server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Open in the browser**
+   ```
+   http://localhost:5000
+   ```
+
+### Demo Login
+
+After seeding, log in with any demo account, for example:
+
+```
+Email:    ananya@vibe.app
+Password: password123
 ```
 
-Server runs on `http://localhost:5000`. Open it in a browser and you should see
-`{ "status": "ok", "message": "Vibe API is running" }`.
+## API Endpoints
 
-## Demo login (after seeding)
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/auth/register` | Register a new user | No |
+| POST | `/api/auth/login` | Log in | No |
+| GET | `/api/auth/me` | Get the current user | Yes |
+| GET | `/api/users/:username` | Get a profile and counts | Yes |
+| PUT | `/api/users/me` | Update your profile | Yes |
+| POST | `/api/users/:username/follow` | Follow a user | Yes |
+| DELETE | `/api/users/:username/follow` | Unfollow a user | Yes |
+| GET | `/api/posts/feed` | Feed from people you follow | Yes |
+| GET | `/api/posts/explore` | Newest posts from everyone | Yes |
+| POST | `/api/posts` | Create a post | Yes |
+| GET | `/api/posts/:id` | Get one post with comments | Yes |
+| DELETE | `/api/posts/:id` | Delete your own post | Yes |
+| POST | `/api/posts/:id/like` | Like a post | Yes |
+| DELETE | `/api/posts/:id/like` | Unlike a post | Yes |
+| POST | `/api/comments/:postId` | Comment on a post | Yes |
+| DELETE | `/api/comments/:id` | Delete your own comment | Yes |
 
-Every seeded account uses the password `password123`. For example:
-
-```
-email:    ananya@vibe.app
-password: password123
-```
-
-## API overview
-
-All routes below (except register/login) require an
-`Authorization: Bearer <token>` header, where the token comes from register/login.
-
-### Auth
-| Method | Route | Description |
-|--------|-------|-------------|
-| POST | `/api/auth/register` | Create an account |
-| POST | `/api/auth/login` | Log in, get a token |
-| GET | `/api/auth/me` | Get the current logged-in user |
-
-### Users
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/users/:username` | Get a profile + counts |
-| PUT | `/api/users/me` | Update your profile |
-| POST | `/api/users/:username/follow` | Follow a user |
-| DELETE | `/api/users/:username/follow` | Unfollow a user |
-| GET | `/api/users/suggestions` | Suggested users to follow |
-
-### Posts
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | `/api/posts/feed` | Feed (people you follow + you) |
-| GET | `/api/posts/explore` | Newest posts from everyone |
-| GET | `/api/posts/user/:userId` | All posts by one user |
-| POST | `/api/posts` | Create a post |
-| GET | `/api/posts/:id` | One post + its comments |
-| DELETE | `/api/posts/:id` | Delete your own post |
-| POST | `/api/posts/:id/like` | Like a post |
-| DELETE | `/api/posts/:id/like` | Unlike a post |
-
-### Comments
-| Method | Route | Description |
-|--------|-------|-------------|
-| POST | `/api/comments/:postId` | Comment on a post |
-| DELETE | `/api/comments/:id` | Delete your own comment |
-
-## Project structure
+## Project Structure
 
 ```
-server/
-├── config/db.js          # MongoDB connection
-├── middleware/auth.js     # JWT auth guard
-├── models/                # Mongoose schemas
-│   ├── User.js
-│   ├── Post.js
-│   ├── Comment.js
-│   ├── Like.js
-│   └── Follow.js
-├── routes/                # API endpoints
-│   ├── auth.js
-│   ├── users.js
-│   ├── posts.js
-│   └── comments.js
-├── utils/seed.js          # demo data seeder
-├── server.js              # app entry point
-└── .env.example           # environment template
+CodeAlpha_SocialMedia/
+├── server.js              # Express server entry point
+├── config/db.js           # MongoDB connection
+├── models/                # Mongoose schemas (User, Post, Comment, Like, Follow)
+├── routes/                # API routes (auth, users, posts, comments)
+├── middleware/auth.js     # JWT verification
+├── utils/seed.js          # Demo data seeder
+├── public/                # Frontend (index.html, styles.css, app.js)
+└── package.json
 ```
+
+## Author
+
+**Aashi** — CodeAlpha Full Stack Development Intern
+
+## License
+
+This project is built for educational purposes as part of the CodeAlpha Internship Program.
